@@ -26,6 +26,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
