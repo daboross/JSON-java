@@ -691,7 +691,7 @@ public class JSONObject {
      *
      * @return An iterator of the keys.
      */
-    public Iterator keys() {
+    public Iterator<String> keys() {
         return this.keySet().iterator();
     }
 
@@ -700,7 +700,7 @@ public class JSONObject {
      *
      * @return A keySet.
      */
-    public Set keySet() {
+    public Set<String> keySet() {
         return this.map.keySet();
     }
 
