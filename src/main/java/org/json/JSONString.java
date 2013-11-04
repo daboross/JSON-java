@@ -34,8 +34,7 @@ package org.json;
  * of using the Object's
  * <code>toString()</code> method and quoting the result.
  */
-public interface JSONString
-{
+public interface JSONString {
 
     /**
      * The

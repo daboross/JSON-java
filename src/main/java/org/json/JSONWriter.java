@@ -61,8 +61,7 @@ import java.io.Writer;
  * @author JSON.org
  * @version 2011-11-24
  */
-public class JSONWriter
-{
+public class JSONWriter {
 
     private static final int maxdepth = 200;
     /**
@@ -93,11 +92,10 @@ public class JSONWriter
      *
      * @param w
      */
-    public JSONWriter( Writer w )
-    {
+    public JSONWriter(Writer w) {
         this.comma = false;
         this.mode = 'i';
-        this.stack = new JSONObject[ maxdepth ];
+        this.stack = new JSONObject[maxdepth];
         this.top = 0;
         this.writer = w;
     }
@@ -109,33 +107,26 @@ public class JSONWriter
      * @return this
      * @throws JSONException If the value is out of sequence.
      */
-    private JSONWriter append( String string ) throws JSONException
-    {
-        if ( string == null )
-        {
-            throw new JSONException( "Null pointer" );
+    private JSONWriter append(String string) throws JSONException {
+        if (string == null) {
+            throw new JSONException("Null pointer");
         }
-        if ( this.mode == 'o' || this.mode == 'a' )
-        {
-            try
-            {
-                if ( this.comma && this.mode == 'a' )
-                {
-                    this.writer.write( ',' );
+        if (this.mode == 'o' || this.mode == 'a') {
+            try {
+                if (this.comma && this.mode == 'a') {
+                    this.writer.write(',');
                 }
-                this.writer.write( string );
-            } catch ( IOException e )
-            {
-                throw new JSONException( e );
+                this.writer.write(string);
+            } catch (IOException e) {
+                throw new JSONException(e);
             }
-            if ( this.mode == 'o' )
-            {
+            if (this.mode == 'o') {
                 this.mode = 'k';
             }
             this.comma = true;
             return this;
         }
-        throw new JSONException( "Value out of sequence." );
+        throw new JSONException("Value out of sequence.");
     }
 
     /**
@@ -148,16 +139,14 @@ public class JSONWriter
      * started in the wrong place (for example as a key or after the end of the
      * outermost array or object).
      */
-    public JSONWriter array() throws JSONException
-    {
-        if ( this.mode == 'i' || this.mode == 'o' || this.mode == 'a' )
-        {
-            this.push( null );
-            this.append( "[" );
+    public JSONWriter array() throws JSONException {
+        if (this.mode == 'i' || this.mode == 'o' || this.mode == 'a') {
+            this.push(null);
+            this.append("[");
             this.comma = false;
             return this;
         }
-        throw new JSONException( "Misplaced array." );
+        throw new JSONException("Misplaced array.");
     }
 
     /**
@@ -168,21 +157,17 @@ public class JSONWriter
      * @return this
      * @throws JSONException If unbalanced.
      */
-    private JSONWriter end( char mode, char c ) throws JSONException
-    {
-        if ( this.mode != mode )
-        {
-            throw new JSONException( mode == 'a'
+    private JSONWriter end(char mode, char c) throws JSONException {
+        if (this.mode != mode) {
+            throw new JSONException(mode == 'a'
                     ? "Misplaced endArray."
-                    : "Misplaced endObject." );
+                    : "Misplaced endObject.");
         }
-        this.pop( mode );
-        try
-        {
-            this.writer.write( c );
-        } catch ( IOException e )
-        {
-            throw new JSONException( e );
+        this.pop(mode);
+        try {
+            this.writer.write(c);
+        } catch (IOException e) {
+            throw new JSONException(e);
         }
         this.comma = true;
         return this;
@@ -195,9 +180,8 @@ public class JSONWriter
      * @return this
      * @throws JSONException If incorrectly nested.
      */
-    public JSONWriter endArray() throws JSONException
-    {
-        return this.end( 'a', ']' );
+    public JSONWriter endArray() throws JSONException {
+        return this.end('a', ']');
     }
 
     /**
@@ -207,9 +191,8 @@ public class JSONWriter
      * @return this
      * @throws JSONException If incorrectly nested.
      */
-    public JSONWriter endObject() throws JSONException
-    {
-        return this.end( 'k', '}' );
+    public JSONWriter endObject() throws JSONException {
+        return this.end('k', '}');
     }
 
     /**
@@ -221,32 +204,26 @@ public class JSONWriter
      * @throws JSONException If the key is out of place. For example, keys do
      * not belong in arrays or if the key is null.
      */
-    public JSONWriter key( String string ) throws JSONException
-    {
-        if ( string == null )
-        {
-            throw new JSONException( "Null key." );
+    public JSONWriter key(String string) throws JSONException {
+        if (string == null) {
+            throw new JSONException("Null key.");
         }
-        if ( this.mode == 'k' )
-        {
-            try
-            {
-                this.stack[this.top - 1].putOnce( string, Boolean.TRUE );
-                if ( this.comma )
-                {
-                    this.writer.write( ',' );
+        if (this.mode == 'k') {
+            try {
+                this.stack[this.top - 1].putOnce(string, Boolean.TRUE);
+                if (this.comma) {
+                    this.writer.write(',');
                 }
-                this.writer.write( JSONObject.quote( string ) );
-                this.writer.write( ':' );
+                this.writer.write(JSONObject.quote(string));
+                this.writer.write(':');
                 this.comma = false;
                 this.mode = 'o';
                 return this;
-            } catch ( IOException e )
-            {
-                throw new JSONException( e );
+            } catch (IOException e) {
+                throw new JSONException(e);
             }
         }
-        throw new JSONException( "Misplaced key." );
+        throw new JSONException("Misplaced key.");
     }
 
     /**
@@ -259,20 +236,17 @@ public class JSONWriter
      * started in the wrong place (for example as a key or after the end of the
      * outermost array or object).
      */
-    public JSONWriter object() throws JSONException
-    {
-        if ( this.mode == 'i' )
-        {
+    public JSONWriter object() throws JSONException {
+        if (this.mode == 'i') {
             this.mode = 'o';
         }
-        if ( this.mode == 'o' || this.mode == 'a' )
-        {
-            this.append( "{" );
-            this.push( new JSONObject() );
+        if (this.mode == 'o' || this.mode == 'a') {
+            this.append("{");
+            this.push(new JSONObject());
             this.comma = false;
             return this;
         }
-        throw new JSONException( "Misplaced object." );
+        throw new JSONException("Misplaced object.");
 
     }
 
@@ -282,16 +256,13 @@ public class JSONWriter
      * @param c The scope to close.
      * @throws JSONException If nesting is wrong.
      */
-    private void pop( char c ) throws JSONException
-    {
-        if ( this.top <= 0 )
-        {
-            throw new JSONException( "Nesting error." );
+    private void pop(char c) throws JSONException {
+        if (this.top <= 0) {
+            throw new JSONException("Nesting error.");
         }
         char m = this.stack[this.top - 1] == null ? 'a' : 'k';
-        if ( m != c )
-        {
-            throw new JSONException( "Nesting error." );
+        if (m != c) {
+            throw new JSONException("Nesting error.");
         }
         this.top -= 1;
         this.mode = this.top == 0
@@ -307,11 +278,9 @@ public class JSONWriter
      * @param c The scope to open.
      * @throws JSONException If nesting is too deep.
      */
-    private void push( JSONObject jo ) throws JSONException
-    {
-        if ( this.top >= maxdepth )
-        {
-            throw new JSONException( "Nesting too deep." );
+    private void push(JSONObject jo) throws JSONException {
+        if (this.top >= maxdepth) {
+            throw new JSONException("Nesting too deep.");
         }
         this.stack[this.top] = jo;
         this.mode = jo == null ? 'a' : 'k';
@@ -327,9 +296,8 @@ public class JSONWriter
      * @return this
      * @throws JSONException
      */
-    public JSONWriter value( boolean b ) throws JSONException
-    {
-        return this.append( b ? "true" : "false" );
+    public JSONWriter value(boolean b) throws JSONException {
+        return this.append(b ? "true" : "false");
     }
 
     /**
@@ -339,9 +307,8 @@ public class JSONWriter
      * @return this
      * @throws JSONException If the number is not finite.
      */
-    public JSONWriter value( double d ) throws JSONException
-    {
-        return this.value( new Double( d ) );
+    public JSONWriter value(double d) throws JSONException {
+        return this.value(new Double(d));
     }
 
     /**
@@ -351,9 +318,8 @@ public class JSONWriter
      * @return this
      * @throws JSONException
      */
-    public JSONWriter value( long l ) throws JSONException
-    {
-        return this.append( Long.toString( l ) );
+    public JSONWriter value(long l) throws JSONException {
+        return this.append(Long.toString(l));
     }
 
     /**
@@ -365,8 +331,7 @@ public class JSONWriter
      * @return this
      * @throws JSONException If the value is out of sequence.
      */
-    public JSONWriter value( Object object ) throws JSONException
-    {
-        return this.append( JSONObject.valueToString( object ) );
+    public JSONWriter value(Object object) throws JSONException {
+        return this.append(JSONObject.valueToString(object));
     }
 }
