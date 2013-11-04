@@ -11,9 +11,9 @@
     <url>https://github.com/daboross/JSON-java</url>
 
     <scm>
-        <url>https://github.com/SkyWars/SkyWars-API.git</url>
-        <connection>scm:git:https://github.com/SkyWars/SkyWars-API.git</connection>
-        <developerConnection>scm:git:git@github.com:SkyWars/SkyWars-API.git</developerConnection>
+        <url>https://github.com/daboross/JSON-Java.git</url>
+        <connection>scm:git:https://github.com/daboross/JSON-Java.git</connection>
+        <developerConnection>scm:git:git@github.com:daboross/JSON-Java.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
     <properties>
